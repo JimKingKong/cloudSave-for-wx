@@ -21,3 +21,14 @@
   width: 100%;
   background-color: white;
 }
+button::after{
+  border: none
+}
+.btn-share{
+ background-color: #fff;
+ border: 1rpx solid #fff
+}
+.btn-share-img{
+  width: 48rpx;
+  height: 48rpx;
+}

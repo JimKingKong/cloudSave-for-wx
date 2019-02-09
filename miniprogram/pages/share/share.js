@@ -7,9 +7,25 @@ Page({
    * 页面的初始数据
    */
   data: {
-    sharedata: [],
+    sharedata: [{
+      title: '1549706325',
+      pic: '../../images/upload/test.jpg',
+      time:1549706325
+    }, {
+      title: '1549706325',
+      pic: '../../images/upload/test.jpg',
+      time: 1549706325
+    }, {
+      title: '1549706325',
+      pic: '../../images/upload/test.jpg',
+      time: 1549706325
+    }, {
+      title: '1549706325',
+      pic: '../../images/upload/test.jpg',
+      time: 1549706325
+    }],
     userInfo: null,
-    isLogin:false
+    isLogin: false
   },
 
   /**
@@ -17,26 +33,26 @@ Page({
    */
   onLoad: function (options) {
     getHomeData()
-    .then((res) => {
-      console.log(res);
-      this.setData({
-        homeBean: res.data.data
-      }) 
+      .then((res) => {
+        console.log(res);
+        this.setData({
+          homeBean: res.data.data
+        })
 
-    
-    })
-    .catch((error) => {
-      console.log(error);
-    
-    });
-  /**
-   * 判断授权
-   */
-   
-      this.setData({
-        userInfo:app.globalData.userInfo
+
       })
-    
+      .catch((error) => {
+        console.log(error);
+
+      });
+    /**
+     * 判断授权
+     */
+
+    this.setData({
+      userInfo: app.globalData.userInfo
+    })
+
   },
 
   /**
@@ -51,7 +67,7 @@ Page({
    */
   onShow: function () {
     this.setData({
-      userInfo:app.globalData.userInfo
+      userInfo: app.globalData.userInfo
     })
   },
 
@@ -87,9 +103,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    console.log('share');
+    
   },
-  onAuthorize(e) { 
+  onAuthorize(e) {
     // console.log(e.detail.userInfo);
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
@@ -98,12 +115,12 @@ Page({
     wx.login({
       success: res => {
         wx.request({
-          url: 'http://47.93.30.78:8080/XiaoMiShop/mine?code='+res.code, //开发者服务器接口地址",
+          url: 'http://47.93.30.78:8080/XiaoMiShop/mine?code=' + res.code, //开发者服务器接口地址",
           success: res => {
             // console.log(res.data);
             app.globalData.isLogin = true;
             this.setData({
-              isLogin:true
+              isLogin: true
             })
           },
         });
@@ -112,4 +129,23 @@ Page({
       complete: () => {}
     });
   },
+  /**
+   * 点击分享
+   */
+  onItemClick() { 
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '要把此文件分享给好友吗',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          _this.onShareAppMessage()
+
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  }
 })

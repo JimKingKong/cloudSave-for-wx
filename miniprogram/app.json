@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/downloaddata/downloaddata",
     "pages/share/share",
-      "pages/upload/upload",
-   
+    "pages/upload/upload",
     "pages/about/about",
     "pages/setting/setting",
     "pages/mine/mine",

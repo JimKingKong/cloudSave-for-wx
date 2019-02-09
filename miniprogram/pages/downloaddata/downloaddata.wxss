@@ -1,0 +1,16 @@
+.download-page{
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.item-detail{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column
+}
+.download-btn{
+  margin-top: 20rpx;
+}

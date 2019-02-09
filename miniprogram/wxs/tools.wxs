@@ -1,6 +1,6 @@
 var formatTime = function (strTime) {
   var date = getDate(strTime);
-  var dateFormat = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  var dateFormat = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
   return dateFormat;
 }
 var formatTitle = function (title) {

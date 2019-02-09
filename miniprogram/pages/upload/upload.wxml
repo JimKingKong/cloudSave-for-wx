@@ -4,15 +4,15 @@
     <view class="center">
       <text class="title">文件>{{tools.formatTitle(title)}}</text>
     </view>
-    <view class="right">
+    <view class="right" bindtap="onUpload">
       <image class="add" src="../../images/upload/add.png"/>
     </view>
   </view>
   <view class="upload-main">
     <view class="upload-main-block">
-      <block wx:for="{{data}}">
-        <view class="upload-main-block-item">
-           <image class="item-img" src="{{item.pic}}"/>
+      <block wx:for="{{data}}" wx:key="{{index}}">
+        <view class="upload-main-block-item" bindlongpress="longPress">
+           <image class="item-img" src="{{item.pic}}" bindtap="itemClick" />
           <text class="item-text">{{item.des}}</text> 
         </view>
       </block>
