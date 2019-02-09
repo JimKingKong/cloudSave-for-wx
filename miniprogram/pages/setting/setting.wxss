@@ -3,7 +3,7 @@
   flex-direction: row;
 
   background: white;
-  margin: 20rpx 0rpx;
+  /* padding: 20rpx 0rpx; */
 }
 .left{
   flex:1;
@@ -15,6 +15,9 @@
   width: 120rpx; /**头像的宽和高*/
   height: 120rpx;
   margin: 20rpx;
+}
+.tran-list{
+  margin-top: 20rpx
 }
 .right{
   flex:1;

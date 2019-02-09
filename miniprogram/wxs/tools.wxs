@@ -1,0 +1,13 @@
+var formatTime = function (strTime) {
+  var date = getDate(strTime);
+  var dateFormat = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  return dateFormat;
+}
+var formatTitle = function (title) {
+  var newTitle = title.substring(1,(title.length-1));
+  return newTitle
+}
+module.exports = {
+  formatTime: formatTime,
+  formatTitle:formatTitle
+}

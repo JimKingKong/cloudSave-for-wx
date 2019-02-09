@@ -1,2 +1,19 @@
-<!--pages/profile/profile.wxml-->
-<text>pages/profile/profile.wxml</text>
+<import src="../../template/authorize-top.wxml"></import>
+<view class="profile-page">
+    <button wx:if="{{userInfo===null}}" style="margin:0;padding:0" open-type="getUserInfo" bindgetuserinfo="onAuthorize">
+        <template is="authorize-top"></template>
+    </button>
+    <text class="manager-tips">管理你的文件</text>
+    <view class="mageger-file">
+        <view class="grids-total">
+            <view class="grids-block">
+                <block wx:for="{{grids}}" wx:key="{{index}}">
+                    <navigator open-type="navigate" url="../upload/upload?title='{{item.title}}'" class="grid-item" hover-class="weui-grid_active">
+                        <image class="weui-grid__icon" src="{{item.pic}}" />
+                        <view class="weui-grid__label">{{item.title}}</view>
+                    </navigator>
+                </block>
+            </view>
+        </view>
+    </view>
+</view>

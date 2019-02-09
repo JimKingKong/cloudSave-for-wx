@@ -20,8 +20,21 @@
  width: 128rpx;
 }
 .message{
+  position: relative;
   width: 90%;
   height: calc(100% - 350rpx);
   background-color: white;
   margin-top: 50rpx;
+  border-radius: 20rpx;
+  padding: 10rpx;
+  box-shadow: 0 0 1rpx 1rpx #ccc
+}
+.copyright{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 10rpx;
+  color: #8a8a8a;
+  font-size: 24rpx
 }

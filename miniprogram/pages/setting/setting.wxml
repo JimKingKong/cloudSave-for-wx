@@ -1,14 +1,14 @@
 <import src="../../template/authorize.wxml"></import>
 <import src="../../template/loadingmore"></import>
 <block wx:if="{{userInfo}}">
-  <view wx:if="{{dataBean}}">
+  <view wx:if="{{dataBean}}" class="setting-page">
     <view class="header">
       <view class="left">
         <image src="{{userInfo.avatarUrl}}" />
       </view>
       <view class="center">
         <view>{{userInfo.nickName}}</view>
-        <view>账号：23412343434</view>
+        <view>账号：{{userInfo.nickName}}</view>
       </view>
       <view class="right">
         <image src="../../images/setting/z-code.png"></image>

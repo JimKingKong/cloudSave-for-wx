@@ -4,6 +4,15 @@
     <view>微信资源云共享 v1.0.0</view>
   </view>
   <view class="message">
-  
+    <view class="weui-article__h3">-什么是云共享</view>
+    <view class="weui-article__h3">云共享是一个文件分享工具，有助于提高团队协作效率。</view>
+    <view class="weui-article__h3">-如何管理文件</view>
+    <view class="weui-article__h3">用户可以在导航栏的文件页面进行文件的管理、包括上传、修改、删除等操作。</view>
+       <view class="weui-article__h3">-用途</view>
+    <view class="weui-article__h3">该系统为毕业论文测试版，个人所用，拒绝任何商业用途。</view>
+     <view class="weui-article__h3" style="margin-top:20rpx">-联系方式</view>
+    <view class="weui-article__h3">邮箱:dgy32111@aliyun.com</view>
+    <view class="weui-article__h3">微信号: dgy32111</view>
+    <view class="copyright">@2019 广东金融学院学生冯琮衍 版权所有</view>
   </view>
 </view>

@@ -1,0 +1,21 @@
+<wxs src="../../wxs/tools.wxs" module="tools"></wxs>
+<view class="upload-page">
+  <view class="upload-top">
+    <view class="center">
+      <text class="title">文件>{{tools.formatTitle(title)}}</text>
+    </view>
+    <view class="right">
+      <image class="add" src="../../images/upload/add.png"/>
+    </view>
+  </view>
+  <view class="upload-main">
+    <view class="upload-main-block">
+      <block wx:for="{{data}}">
+        <view class="upload-main-block-item">
+           <image class="item-img" src="{{item.pic}}"/>
+          <text class="item-text">{{item.des}}</text> 
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

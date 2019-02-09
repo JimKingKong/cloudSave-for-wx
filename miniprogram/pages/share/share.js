@@ -1,18 +1,42 @@
 // pages/share/share.js
+const getHomeData = require('../../utils/service').getHomeData
+const app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    sharedata: [],
+    userInfo: null,
+    isLogin:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    getHomeData()
+    .then((res) => {
+      console.log(res);
+      this.setData({
+        homeBean: res.data.data
+      }) 
 
+    
+    })
+    .catch((error) => {
+      console.log(error);
+    
+    });
+  /**
+   * 判断授权
+   */
+   
+      this.setData({
+        userInfo:app.globalData.userInfo
+      })
+    
   },
 
   /**
@@ -26,7 +50,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      userInfo:app.globalData.userInfo
+    })
   },
 
   /**
@@ -62,5 +88,28 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  onAuthorize(e) { 
+    // console.log(e.detail.userInfo);
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo
+    })
+    wx.login({
+      success: res => {
+        wx.request({
+          url: 'http://47.93.30.78:8080/XiaoMiShop/mine?code='+res.code, //开发者服务器接口地址",
+          success: res => {
+            // console.log(res.data);
+            app.globalData.isLogin = true;
+            this.setData({
+              isLogin:true
+            })
+          },
+        });
+      },
+      fail: () => {},
+      complete: () => {}
+    });
+  },
 })

@@ -1,6 +1,6 @@
 /* pages/share/share.wxss */
 .share-page {
-
+  height: 100%;
 }
 
 .share-title {
@@ -10,9 +10,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border-bottom: 1rpx solid #ccc; */
+  border-bottom: 1rpx solid #ccc;
   font-size: 32rpx;
   box-shadow: 0 1rpx 1rpx 1rpx #ccc;
   background: white;
 
+}
+.share-scroll{
+  height: calc(100% - 100rpx);
+  width: 100%;
+  background-color: white;
 }
