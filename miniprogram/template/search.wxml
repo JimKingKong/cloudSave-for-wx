@@ -1,0 +1,8 @@
+<template name="search">
+<navigator url="{{LinkTo}}" class="view-search">
+<view class="view-search-bg">
+<image src="../../image/icon/search_icon.png" class="image-search"/>
+<text class="text-title">搜索商品</text>
+</view>
+</navigator>
+</template>

@@ -1,7 +1,14 @@
 /**app.wxss**/
+@import'./style/wxui.wxss';
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
 } 
+page{
+  height: 100%;
+}
+@import'style/authorize.wxss';
+@import'style/search-wxss.wxss';
+@import'style/nullcart.wxss';

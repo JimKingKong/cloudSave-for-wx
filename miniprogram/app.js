@@ -11,5 +11,9 @@ App({
     }
 
     this.globalData = {}
+  },
+  globalData: {
+    userInfo: null,
+    isLogin:false
   }
 })

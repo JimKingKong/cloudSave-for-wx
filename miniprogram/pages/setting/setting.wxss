@@ -1,0 +1,42 @@
+.header{
+  display: flex;
+  flex-direction: row;
+
+  background: white;
+  margin: 20rpx 0rpx;
+}
+.left{
+  flex:1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.left image{
+  width: 120rpx; /**头像的宽和高*/
+  height: 120rpx;
+  margin: 20rpx;
+}
+.right{
+  flex:1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.right image{
+  width: 60rpx;
+  height: 60rpx;
+}
+.center{
+  flex:3;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.center view:nth-of-type(1){
+  margin-bottom: 10rpx;
+}
+.center view:nth-of-type(2){
+  font-size: 26rpx;
+  color: #9d9d9d;
+}

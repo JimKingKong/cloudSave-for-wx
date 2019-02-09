@@ -1,0 +1,18 @@
+/* pages/share/share.wxss */
+.share-page {
+
+}
+
+.share-title {
+  color: #515151;
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-bottom: 1rpx solid #ccc; */
+  font-size: 32rpx;
+  box-shadow: 0 1rpx 1rpx 1rpx #ccc;
+  background: white;
+
+}

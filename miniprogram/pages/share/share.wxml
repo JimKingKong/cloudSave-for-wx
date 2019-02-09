@@ -1,0 +1,17 @@
+<view class="share-page">
+<text class="share-title">分享过的文件</text>
+<scroll-view>
+<block>
+<view class="share-item">
+  <view class="left">
+  <image  />
+  </view>
+  <view class="right">
+  <view class="item-title"></view>
+  <view class="item-descp"></view>
+  <view class="item-size"></view>
+  </view>
+</view>
+</block>
+</scroll-view>
+</view>

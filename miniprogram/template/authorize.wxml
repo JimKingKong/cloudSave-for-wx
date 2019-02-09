@@ -1,0 +1,12 @@
+<template name="authorize">
+<view class="total">
+  <open-data type="userAvatarUrl" class="avatar" />
+  <text class="line"></text>
+  <text class="continue-text">该小程序由Jim开发，请提供以下授权，即可继续操作</text>
+  <view class="des">
+    <text class="dot"></text>
+    <text>获取你的公开信息(昵称、头像等)</text>
+  </view>
+  <button open-type="getUserInfo" bindgetuserinfo="{{btnClick}}" class="check-btn" hover-class="hover-class-style">确认授权</button>
+</view>
+</template>

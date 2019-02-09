@@ -1,0 +1,9 @@
+<view class="about-page">
+  <view class="logo-view">
+    <image src="../../images/setting/cloudshare.png" class="logo" mode="widthFix" />
+    <view>微信资源云共享 v1.0.0</view>
+  </view>
+  <view class="message">
+  
+  </view>
+</view>

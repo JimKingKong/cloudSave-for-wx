@@ -1,0 +1,6 @@
+<template name="authorize-top">
+  <view class="authorize" wx:if="{{userInfo==null}}">
+      <icon style="marigin:0 20rpx" type="info" size="40rpx" />
+      <text style="color:grey;font-size:28rpx">请授权头像等信息，以便为您提供更好的服务</text>
+    </view>
+</template>

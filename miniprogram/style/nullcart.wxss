@@ -1,0 +1,42 @@
+.nulcart {
+  width: 100%;
+  height: 100%;
+  background: #eaeaea;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nulcart .cart-logo {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nulcart .cart-logo image {
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.nulcart .cart-desp {
+  font-size: 40rpx;
+  color: #4e4e4e;
+}
+
+.nulcart .cart-btn {
+  margin-top: 50rpx;
+  width: 80%;
+  height: 100rpx;
+  background: #ff6803;
+  color: white;
+  font-size: 36rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+}

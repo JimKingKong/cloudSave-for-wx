@@ -1,0 +1,27 @@
+/* pages/about/about.wxss */
+.about-page{
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  flex-direction: column;
+  align-items: center
+}
+.logo-view{
+  width: 100%;
+  height: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  flex-direction: column
+}
+.logo{
+ width: 128rpx;
+}
+.message{
+  width: 90%;
+  height: calc(100% - 350rpx);
+  background-color: white;
+  margin-top: 50rpx;
+}

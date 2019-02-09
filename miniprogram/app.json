@@ -1,18 +1,43 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/userConsole/userConsole",
-    "pages/storageConsole/storageConsole",
-    "pages/databaseGuide/databaseGuide",
-    "pages/addFunction/addFunction",
-    "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib"
+    "pages/share/share",
+      "pages/upload/upload",
+   
+    "pages/about/about",
+    "pages/setting/setting",
+    "pages/mine/mine",
+    "pages/profile/profile",
+    "pages/index/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTitleText": "微信资源云共享",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#1afa29",
+    "list": [
+      {
+        "pagePath": "pages/share/share",
+        "text": "分享",
+        "iconPath": "./images/nav/share.png",
+        "selectedIconPath": "./images/nav/share1.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "文件",
+        "iconPath": "./images/nav/profile.png",
+        "selectedIconPath": "./images/nav/profile1.png"
+      },
+      {
+        "pagePath": "pages/setting/setting",
+        "text": "设置",
+        "iconPath": "./images/nav/setting.png",
+        "selectedIconPath": "./images/nav/setting1.png"
+      }
+    ]
   }
 }
