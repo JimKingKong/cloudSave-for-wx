@@ -29,26 +29,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    getHomeData()
-    .then((res) => {
-      console.log(res);
-      this.setData({
-        homeBean: res.data.data
-      }) 
-
     
-    })
-    .catch((error) => {
-      console.log(error);
-    
-    });
-  /**
-   * 判断授权
-   */
-   
-      this.setData({
-        userInfo:app.globalData.userInfo
-      })
     
   },
 
@@ -63,9 +44,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      userInfo:app.globalData.userInfo
-    })
+  
   },
 
   /**

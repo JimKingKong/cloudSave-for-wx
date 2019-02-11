@@ -1,8 +1,6 @@
-<import src="../../template/authorize-top.wxml"></import>
+
 <view class="profile-page">
-    <button wx:if="{{userInfo===null}}" style="margin:0;padding:0" open-type="getUserInfo" bindgetuserinfo="onAuthorize">
-        <template is="authorize-top"></template>
-    </button>
+    
     <text class="manager-tips">管理你的文件</text>
     <view class="mageger-file">
         <view class="grids-total">

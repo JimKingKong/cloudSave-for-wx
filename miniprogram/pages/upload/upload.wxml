@@ -10,9 +10,11 @@
   </view>
   <view class="upload-main">
     <view class="upload-main-block">
-      <block wx:for="{{data}}" wx:key="{{index}}">
-        <view class="upload-main-block-item" bindlongpress="longPress">
-           <image class="item-img" src="{{item.pic}}" bindtap="itemClick" />
+      <block wx:for="{{uploaddata}}" wx:key="{{index}}">
+        <view class="upload-main-block-item" bindlongpress="longPress" id="{{index}}">
+           <image wx:if="{{item.pic}}" class="item-img" src="{{item.pic}}" bindtap="itemClick"id="{{index}}" data-type="{{item}}"/>
+           <image wx:elif="{{item.videoPic}}" class="item-img" src="{{mp4logo}}" bindtap="itemClick"id="{{index}}" data-type="{{item}}"/>
+           <image wx:else class="item-img" src="{{otherlogo}}" bindtap="itemClick"id="{{index}}" data-type="{{item}}"/>
           <text class="item-text">{{item.des}}</text> 
         </view>
       </block>

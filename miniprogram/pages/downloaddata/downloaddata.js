@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    itempreview:'../../images/upload/test.jpg'
+    itempreview:null
   },
 
   /**
@@ -13,7 +13,9 @@ Page({
    */
   onLoad: function (options) {
     console.log(options);
-    
+    this.setData({
+      itempreview:options.pic
+    })
   },
 
   /**

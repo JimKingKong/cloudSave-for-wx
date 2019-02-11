@@ -1,12 +1,9 @@
-<import src="../../template/authorize-top.wxml"></import>
+
 <import src="../../template/loadingmore.wxml"></import>
 <wxs src="../../wxs/tools.wxs" module="tools"></wxs>
 <block wx:if="{{sharedata}}">
   <view class="share-page">
-    <button wx:if="{{userInfo===null}}" style="margin:0;padding:0" open-type="getUserInfo" bindgetuserinfo="onAuthorize">
-      <template is="authorize-top"></template>
-    </button>
-    <text class="share-title">分享过的文件</text>
+    <text class="share-title">我分享的文件</text>
     <scroll-view class="share-scroll">
       <block wx:for="{{sharedata}}" wx:key="{{index}}">
         <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
@@ -17,7 +14,7 @@
             <view class="weui-media-box__title">{{item.title}}</view>
             <view class="weui-media-box__desc">{{tools.formatTime(item.time)}}</view>
           </view>
-          <button class="btn-share" open-type="share">
+          <button class="btn-share" open-type="share" id="{{index}}">
             <image class="btn-share-img" src="../../images/share/sharefile.png" />
           </button>
         </view>

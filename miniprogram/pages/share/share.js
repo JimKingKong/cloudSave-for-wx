@@ -13,15 +13,15 @@ Page({
       time:1549706325
     }, {
       title: '1549706325',
-      pic: '../../images/upload/test.jpg',
+      pic: '../../images/upload/tom.jpg',
       time: 1549706325
     }, {
       title: '1549706325',
-      pic: '../../images/upload/test.jpg',
+      pic: '../../images/share/duck.jpg',
       time: 1549706325
     }, {
       title: '1549706325',
-      pic: '../../images/upload/test.jpg',
+      pic: '../../images/share/gkd.jpg',
       time: 1549706325
     }],
     userInfo: null,
@@ -32,26 +32,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    getHomeData()
-      .then((res) => {
-        console.log(res);
-        this.setData({
-          homeBean: res.data.data
-        })
-
-
-      })
-      .catch((error) => {
-        console.log(error);
-
-      });
-    /**
-     * 判断授权
-     */
-
-    this.setData({
-      userInfo: app.globalData.userInfo
-    })
+   
 
   },
 
@@ -66,9 +47,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      userInfo: app.globalData.userInfo
-    })
+    
   },
 
   /**
@@ -102,8 +81,13 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-    console.log('share');
+  onShareAppMessage: function (event) {
+    console.log(event)
+    let targetId = event.target.id
+    return {
+      title:'分享文件',
+      path:'pages/downloaddata/downloaddata?pic='+this.data.sharedata[targetId].pic,
+    }
     
   },
   onAuthorize(e) {
@@ -129,23 +113,5 @@ Page({
       complete: () => {}
     });
   },
-  /**
-   * 点击分享
-   */
-  onItemClick() { 
-    let _this = this;
-    wx.showModal({
-      title: '提示',
-      content: '要把此文件分享给好友吗',
-      success(res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-          _this.onShareAppMessage()
-
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
-  }
+  
 })
