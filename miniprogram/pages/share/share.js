@@ -11,6 +11,7 @@ Page({
     userInfo: null,
     isLogin: false,
     mp4logo: '../../images/upload/MP4logo.png',
+    shareLogo:'../../images/setting/cloudshare.png'
   },
 
   /**
@@ -68,10 +69,22 @@ Page({
   onShareAppMessage: function (event) {
     console.log(event)
     let targetId = event.target.id
-    return {
-      title:'分享文件',
-      path:'pages/downloaddata/downloaddata?pic='+this.data.sharedata[targetId].pic,
+    if (this.data.shareList[targetId].isImg) {
+      return {
+        title:'分享文件',
+        path: 'pages/downloaddata/downloaddata?url=' + this.data.shareList[targetId].pic,
+        imageUrl:this.data.shareLogo
+      }
+      
+    }else if (this.data.shareList[targetId].isVideo) {
+      return {
+        title:'分享文件',
+        path: 'pages/downloaddata/downloaddata?url=' + this.data.shareList[targetId].videoPic,
+        imageUrl:this.data.shareLogo
+      }
+      
     }
+    
   },
   getPageData() {
     let _this =this
