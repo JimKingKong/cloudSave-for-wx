@@ -1,47 +1,57 @@
 // pages/upload/upload.js
+const db = wx.cloud.database();
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
     title: null,
+    type: null,
     uploaddata: null,
+    isAuthorize: false,
+    showrename: false,
+    inputValue: null,
+    showDelete:false,
+    id:null,
     mp4logo: '../../images/upload/MP4logo.png',
-    otherlogo:'../../images/upload/file-unknown.png'
-    
-    // {
-    //   pic: '../../images/upload/test.jpg',
-    //   des: '1231457891'
-    // }, {
-    //   pic: '../../images/upload/test.jpg',
-    //   des: '1231457891'
-    // }, {
-    //   pic: '../../images/upload/test.jpg',
-    //   des: '1231457891'
-    // }, {
-    //   pic: '../../images/upload/test.jpg',
-    //   des: '1231457891'
-    // }
+    otherlogo: '../../images/upload/file-unknown.png'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.cloud.callFunction({
-      name: 'getFileList',
-      data: {
-        // type:options.title
-        typeDB:'users'
-      },
-      complete: res => {
-        console.log(res.result);
-        
-      }
-    })
+    let _this = this;
+    let typeDB = 'users'
+    if (options.title === "'图片'") {
+      typeDB = 'picture'
+    } else if (options.title === "'我的'") {
+      typeDB = 'mine'
+    } else if (options.title === "'收藏'") {
+      typeDB = 'collection'
+    } else {
+      typeDB = 'video'
+    }
     this.setData({
-      title: options.title
+      title: options.title,
+      type: typeDB
+    })
+    this.getCurrentPage()
+
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.writePhotosAlbum']) {
+          wx.authorize({
+            scope: 'scope.writePhotosAlbum',
+            success(res) {
+              console.log(res);
+              _this.setData({
+                isAuthorize: true
+              })
+            }
+          })
+        }
+      }
     })
 
   },
@@ -94,7 +104,7 @@ Page({
   onShareAppMessage: function () {
 
   },
-  
+
   /**
    * 点击上传事件
    */
@@ -135,23 +145,97 @@ Page({
       wx.previewImage({
         urls: [this.data.uploaddata[currentIndex].pic] //需要预览的图片链接列表,
       });
-    }else if (e.currentTarget.dataset.type.isVideo) {
+    } else if (e.currentTarget.dataset.type.isVideo) {
       console.log('点击了视频');
-      
+
     }
-   
+
   },
   /**
-   * 长按
+   * 长按 
    */
-  longPress() {
-    console.log('弹出菜单');
+  longPress(e) {
+    let _this = this
+    console.log(e);
+    let typeDB = _this.data.type;
+    let id = e.currentTarget.dataset.type._id
+    let item = e.currentTarget.dataset.type
     wx.showActionSheet({
       itemList: ['保存到本地', '设为分享', '重命名', '删除'], //按钮的文字数组，数组长度最大为6个,
       itemColor: '#000000', //按钮的文字颜色,
       success: res => {
         console.log(res);
 
+        if (res.tapIndex === 0) {
+          //保存到本地
+          if (item.isImg) {
+            wx.cloud.downloadFile({
+              fileID: item.pic,
+              success(res) {
+                wx.saveImageToPhotosAlbum({
+                  filePath: res.tempFilePath,
+                  success(saveres) {
+                    console.log('保存成功', saveres);
+
+                  },
+                })
+              }
+            })
+          } else if (item.isVideo) {
+            wx.cloud.downloadFile({
+              fileID: item.videoPic,
+              success(res) {
+                console.log(res);
+                wx.saveVideoToPhotosAlbum({
+                  filePath: res.tempFilePath,
+                  success(saveres) {
+                    console.log('保存视频成功', saveres);
+                  }
+                })
+              }
+            })
+          } else {
+
+          }
+
+
+
+          // if (_this.data.isAuthorize) {
+
+          // } else {
+          //   wx.showModal({
+          //     title: '提示', //提示的标题,
+          //     content: '您还没有同意授权,无法保存到本地相册,可在设置->授权管理中再次授权', //提示的内容,
+          //   });
+          // }
+
+        } else if (res.tapIndex === 1) {
+          //设为分享
+          db.collection(typeDB).doc(id).update({
+            data: {
+              isShare: true
+            },
+            success(res) {
+              console.log(res);
+            }
+          });
+
+          _this.getCurrentPage();
+          console.log(_this.data.uploaddata);
+
+        } else if (res.tapIndex === 2) {
+          //重命名
+          _this.setData({
+            showrename: true,
+            id
+          })
+        } else if (res.tapIndex === 3) {
+          //删除
+          this.setData({
+            showDelete: true,
+            id
+          })
+        }
       }
     });
   },
@@ -160,6 +244,7 @@ Page({
    */
   chooseImage() {
     let _this = this
+    let type = this.data.type;
     wx.chooseImage({
       count: '1', //最多可以选择的图片张数,
       success: res => {
@@ -174,32 +259,13 @@ Page({
           cloudPath,
           filePath,
           success: res => {
-            let newUploadData = null
-        
-            if (_this.data.uploaddata === null) {
-              newUploadData = []
-            } else {
-              newUploadData = _this.data.uploaddata;
-            }
-
-            newUploadData.push({
-              pic: res.fileID,
-              des: name,
-              isImg: true,
-              isShare:false
-            })
-            console.log('[上传图片] 成功：', res);
-            _this.setData({
-              uploaddata: newUploadData
-            })
-            console.log(_this.data);;
             let fileID = res.fileID;
-            const db = wx.cloud.database();
-            db.collection("users").add({
+            db.collection(type).add({
               data: {
-                bigImg: fileID,  
+                pic: fileID,
+                des: name,
                 isImg: true,
-                isShare:false
+                isShare: false
               },
               success() {
                 wx.showToast({
@@ -207,7 +273,9 @@ Page({
                   icon: 'success', //图标,
                   duration: 2000, //延迟时间,
                   mask: true, //显示透明蒙层，防止触摸穿透,
-                  success: res => {},
+                  success: res => {
+                    _this.getCurrentPage()
+                  },
                   fail() {
                     wx.showToast({
                       title: '图片存储失败', //提示的内容,
@@ -236,6 +304,7 @@ Page({
   },
   chooseVideo() {
     let _this = this;
+    let type = this.data.type;
     wx.chooseVideo({
       sourceType: ['album', 'camera'],
       maxDuration: 60,
@@ -252,34 +321,13 @@ Page({
           cloudPath, //云存储图片名字
           filePath, //临时路径
           success: res => {
-            let newUploadData = null
-            
-            if (_this.data.uploaddata == null) {
-              newUploadData = []
-            } else {
-              newUploadData = _this.data.uploaddata;
-            }
-
-            console.log('[上传视频] 成功：', res)
-            
-
-            newUploadData.push({
-              videoPic: res.fileID,
-              des: name,
-              isVideo: true,
-              isShare:false
-            })
-            _this.setData({
-              uploaddata: newUploadData
-            });
-            console.log(_this.data.uploaddata);
             let fileID = res.fileID;
-            const db = wx.cloud.database();
-            db.collection("users").add({
+            db.collection(type).add({
               data: {
-                bigVideo: fileID,
+                videoPic: fileID,
+                des: name,
                 isVideo: true,
-                isShare:false
+                isShare: false
               },
               success() {
                 wx.showToast({
@@ -287,7 +335,9 @@ Page({
                   icon: 'success', //图标,
                   duration: 2000, //延迟时间,
                   mask: true, //显示透明蒙层，防止触摸穿透,
-                  success: res => {},
+                  success: res => {
+                    _this.getCurrentPage()
+                  },
                   fail() {
                     wx.showToast({
                       title: '视频存储失败', //提示的内容,
@@ -306,6 +356,77 @@ Page({
     })
   },
   /**
-   * 
+   * 获取数据
    */
+  getCurrentPage() {
+    let typeDB = this.data.type;
+    wx.cloud.callFunction({
+      name: 'getFileList',
+      data: {
+        typeDB
+      },
+      complete: res => {
+        this.setData({
+          uploaddata: res.result.list
+        })
+      }
+    })
+  },
+  /**
+   * reName
+   */
+  reNameCancel() {
+    this.setData({
+      showrename: false
+    })
+  },
+  reNameConfirm() {
+    let inputValue = this.data.inputValue;
+    let typeDB = this.data.type;
+    let id = this.data.id
+    db.collection(typeDB).doc(id).update({
+      data: {
+        des: inputValue
+      },
+      success(res) {
+        console.log(res);
+      }
+    });
+    this.getCurrentPage();
+    this.setData({
+      showrename: false
+    })
+  },
+  setRenameValue(e) {
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+  /**
+   * delete
+   */
+  deleteCancel() {
+  
+    this.setData({
+      showDelete:false
+    })
+  },
+  deleteConfirm() {
+    let _this = this
+    let typeDB = this.data.type;
+    let id = this.data.id
+    db.collection(typeDB).doc(id).remove({
+      success(res) {
+        console.log(res);
+        _this.getCurrentPage();
+      },
+      fail(e) {
+        console.log(e);
+      }
+    })
+   
+    this.setData({
+      showDelete: false
+    })
+  }
 })
