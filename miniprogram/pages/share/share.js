@@ -7,38 +7,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-    sharedata: [{
-      title: '1549706325',
-      pic: '../../images/upload/test.jpg',
-      time:1549706325
-    }, {
-      title: '1549706325',
-      pic: '../../images/upload/tom.jpg',
-      time: 1549706325
-    }, {
-      title: '1549706325',
-      pic: '../../images/share/duck.jpg',
-      time: 1549706325
-    }, {
-      title: '1549706325',
-      pic: '../../images/share/gkd.jpg',
-      time: 1549706325
-    }],
+    shareList:null,
     userInfo: null,
-    isLogin: false
+    isLogin: false,
+    mp4logo: '../../images/upload/MP4logo.png',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.cloud.callFunction({
-      name: "getShareFile",
-      success(res) {
-        console.log(res);
-        
-      }
-    })
+    this.getPageData()
   },
 
   /**
@@ -52,7 +31,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    this.getPageData()
   },
 
   /**
@@ -94,5 +73,18 @@ Page({
       path:'pages/downloaddata/downloaddata?pic='+this.data.sharedata[targetId].pic,
     }
   },
+  getPageData() {
+    let _this =this
+    wx.cloud.callFunction({
+      name: "getShareFile",
+      success(res) {
+        _this.setData({
+          shareList:res.result.list
+        })
+        console.log(_this.data.shareList);
+        
+      }
+    })
+  }
  
 })

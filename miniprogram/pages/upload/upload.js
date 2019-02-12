@@ -217,6 +217,13 @@ Page({
             },
             success(res) {
               console.log(res);
+              wx.showToast({
+                title: '设置成功', //提示的内容,
+                icon: 'success', //图标,
+                duration: 2000, //延迟时间,
+                mask: true, //显示透明蒙层，防止触摸穿透,
+                success: res => {}
+              });
             }
           });
 
@@ -265,7 +272,8 @@ Page({
                 pic: fileID,
                 des: name,
                 isImg: true,
-                isShare: false
+                isShare: false,
+                time:name
               },
               success() {
                 wx.showToast({
@@ -327,7 +335,8 @@ Page({
                 videoPic: fileID,
                 des: name,
                 isVideo: true,
-                isShare: false
+                isShare: false,
+                time:name
               },
               success() {
                 wx.showToast({
