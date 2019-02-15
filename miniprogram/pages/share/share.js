@@ -1,4 +1,5 @@
 // pages/share/share.js
+const db = wx.cloud.database();
 const getHomeData = require('../../utils/service').getHomeData
 const app = getApp();
 Page({
@@ -98,6 +99,49 @@ Page({
         
       }
     })
+  },
+  /**
+   * 长按弹出菜单
+   */
+  longPress(e) { 
+    let item = e.currentTarget.dataset.item;
+    console.log(item);
+    let _this = this
+    wx.showActionSheet({
+      itemList: ['取消分享'], //按钮的文字数组，数组长度最大为6个,
+      itemColor: '#000000', //按钮的文字颜色,
+      success: res => {
+        if (res.tapIndex === 0) {
+          db.collection(item.from).doc(item.id).update({
+            data: {
+              isShare: false
+            },
+            success(res) {
+              console.log(res);
+              wx.showToast({
+                title: '设置成功', //提示的内容,
+                icon: 'success', //图标,
+                duration: 2000, //延迟时间,
+                mask: true, //显示透明蒙层，防止触摸穿透,
+                success: res => {
+                  _this.getPageData();
+                }
+              });
+            },
+            fail(e) {
+              console.log(e);
+              wx.showToast({
+                title: '设置失败,请检查网络', //提示的内容,
+                icon: 'fail', //图标,
+                duration: 2000, //延迟时间,
+                mask: true, //显示透明蒙层，防止触摸穿透,
+                success: res => {}
+              });
+            }
+          });
+        } 
+      }
+    });
   }
  
 })

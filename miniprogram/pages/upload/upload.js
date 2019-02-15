@@ -12,7 +12,8 @@ Page({
     showrename: false,
     inputValue: null,
     showDelete:false,
-    id:null,
+    id: null,
+    item:null,
     mp4logo: '../../images/upload/MP4logo.png',
     otherlogo: '../../images/upload/file-unknown.png'
   },
@@ -198,17 +199,6 @@ Page({
 
           }
 
-
-
-          // if (_this.data.isAuthorize) {
-
-          // } else {
-          //   wx.showModal({
-          //     title: '提示', //提示的标题,
-          //     content: '您还没有同意授权,无法保存到本地相册,可在设置->授权管理中再次授权', //提示的内容,
-          //   });
-          // }
-
         } else if (res.tapIndex === 1) {
           //设为分享
           db.collection(typeDB).doc(id).update({
@@ -240,7 +230,8 @@ Page({
           //删除
           this.setData({
             showDelete: true,
-            id
+            id,
+            item
           })
         }
       }
@@ -270,6 +261,7 @@ Page({
             db.collection(type).add({
               data: {
                 pic: fileID,
+                from:type,
                 des: name,
                 isImg: true,
                 isShare: false,
@@ -299,7 +291,12 @@ Page({
           },
           fail: error => {
             console.log('[上传图片] 失败：', error);
-
+            wx.showToast({
+              title: '上传失败,请检查网络',
+              icon: 'fail', //图标,
+              duration: 2000, //延迟时间,
+              mask: true, //显示透明蒙层，防止触摸穿透,
+            })
           },
           complete: () => {
             wx.hideLoading();
@@ -333,6 +330,7 @@ Page({
             db.collection(type).add({
               data: {
                 videoPic: fileID,
+                from:type,
                 des: name,
                 isVideo: true,
                 isShare: false,
@@ -374,10 +372,13 @@ Page({
       data: {
         typeDB
       },
-      complete: res => {
+      success: res => {
         this.setData({
           uploaddata: res.result.list
         })
+      },
+      fail: e =>{
+        console.log(e)
       }
     })
   },

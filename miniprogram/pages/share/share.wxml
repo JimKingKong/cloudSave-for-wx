@@ -6,7 +6,7 @@
     <text class="share-title">我分享的文件</text>
     <scroll-view class="share-scroll" scroll-y>
       <block wx:for="{{shareList}}" wx:key="{{index}}">
-        <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active" bindlongpress="longPress" data-item="{{item}}">
           <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
             <image wx:if="{{item.pic}}" class="weui-media-box__thumb" src="{{item.pic}}" />
             <image wx:else class="weui-media-box__thumb" src="{{mp4logo}}" />

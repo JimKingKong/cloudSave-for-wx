@@ -1,13 +1,17 @@
-var formatTime = function (strTime) {
+var formatTime = function(strTime) {
   var date = getDate(strTime);
-  var dateFormat = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+  var dateFormat = date.getFullYear() + '-' + format((date.getMonth() + 1)) + '-' + format(date.getDate()) + ' ' + format(date.getHours()) + ':' + format(date.getMinutes()) + ':' + format(date.getSeconds());
   return dateFormat;
 }
-var formatTitle = function (title) {
-  var newTitle = title.substring(1,(title.length-1));
+
+function format(time) {
+  return time >= 10 ? time : "0" + time
+}
+var formatTitle = function(title) {
+  var newTitle = title.substring(1, (title.length - 1));
   return newTitle
 }
 module.exports = {
   formatTime: formatTime,
-  formatTitle:formatTitle
+  formatTitle: formatTitle
 }
