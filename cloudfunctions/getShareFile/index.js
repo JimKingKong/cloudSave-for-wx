@@ -15,15 +15,19 @@ exports.main = async(event, context) => {
   // let list = await db.collection(typeDB).get();
   let allShare = [];
   let minelist = await db.collection('mine').where({
+    _openid: wxContext.OPENID,
     isShare: true
   }).get();
   let piclist =  await db.collection('picture').where({
+    _openid: wxContext.OPENID,
     isShare: true
   }).get();
   let videolist = await db.collection('video').where({
+    _openid: wxContext.OPENID,
     isShare: true
   }).get();
   let collectionlist = await db.collection('collection').where({
+    _openid: wxContext.OPENID,
     isShare: true
   }).get();
   allShare = clone(minelist.data, allShare);

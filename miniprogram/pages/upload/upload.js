@@ -11,9 +11,9 @@ Page({
     isAuthorize: false,
     showrename: false,
     inputValue: null,
-    showDelete:false,
+    showDelete: false,
     id: null,
-    item:null,
+    item: null,
     mp4logo: '../../images/upload/MP4logo.png',
     otherlogo: '../../images/upload/file-unknown.png'
   },
@@ -140,7 +140,8 @@ Page({
    * 点击图片
    */
   itemClick(e) {
-    console.log(e);
+    let _this = this
+    console.log(e.currentTarget.dataset.type);
     let currentIndex = e.currentTarget.id
     if (e.currentTarget.dataset.type.isImg) {
       wx.previewImage({
@@ -148,7 +149,14 @@ Page({
       });
     } else if (e.currentTarget.dataset.type.isVideo) {
       console.log('点击了视频');
-
+      let videoLink = e.currentTarget.dataset.type.videoPic;
+      _this.changeVideoLink(videoLink).then(res => {
+        console.log(res);
+        let realUrl = res.fileList.tempFileURL
+        wx.navigateTo({ url: 'url' });
+      }).catch(error => {
+        console.log(error);
+      })
     }
 
   },
@@ -261,11 +269,11 @@ Page({
             db.collection(type).add({
               data: {
                 pic: fileID,
-                from:type,
+                from: type,
                 des: name,
                 isImg: true,
                 isShare: false,
-                time:name
+                time: name
               },
               success() {
                 wx.showToast({
@@ -330,11 +338,11 @@ Page({
             db.collection(type).add({
               data: {
                 videoPic: fileID,
-                from:type,
+                from: type,
                 des: name,
                 isVideo: true,
                 isShare: false,
-                time:name
+                time: name
               },
               success() {
                 wx.showToast({
@@ -377,7 +385,7 @@ Page({
           uploaddata: res.result.list
         })
       },
-      fail: e =>{
+      fail: e => {
         console.log(e)
       }
     })
@@ -416,9 +424,9 @@ Page({
    * delete
    */
   deleteCancel() {
-  
+
     this.setData({
-      showDelete:false
+      showDelete: false
     })
   },
   deleteConfirm() {
@@ -434,9 +442,28 @@ Page({
         console.log(e);
       }
     })
-   
+
     this.setData({
       showDelete: false
+    })
+  },
+  /**
+   * changeVideoLink(转换视频为http链接)
+   */
+  changeVideoLink(cloudLink) {
+    return new Promise((resolve, reject) => {
+      wx.cloud.getTempFileURL({
+        fileList: [{
+          fileID: cloudLink
+        }],
+        success: res => {
+          console.log(res);
+          resolve(res)
+        },
+        fail: error => {
+          reject(error)
+        }
+      })
     })
   }
 })

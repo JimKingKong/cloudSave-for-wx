@@ -1,6 +1,6 @@
 <view class="download-page">
   <view class="item-detail">
-    <image mode="widthFix" src="{{itempreview}}" />
+    <image mode="widthFix" src="{{itemPreview}}" />
   <button size="mini" type="primary" class="download-btn">点击下载</button>
   </view>
 </view>

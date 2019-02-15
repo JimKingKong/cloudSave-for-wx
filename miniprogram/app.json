@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/watchvideo/watchvideo",
     "pages/share/share",
     "pages/downloaddata/downloaddata",
     

@@ -92,6 +92,7 @@ Page({
     wx.cloud.callFunction({
       name: "getShareFile",
       success(res) {
+        console.log(res);
         _this.setData({
           shareList:res.result.list
         })

@@ -12,7 +12,9 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   let typeDB = event.typeDB;
   //集合数据的载体list
-  let list = await db.collection(typeDB).get();
+  let list = await db.collection(typeDB).where({
+    _openid: wxContext.OPENID,
+  }).get();
   //获取云端typeDB集合的所有数据(上限为100)
   return {
     list:list.data,

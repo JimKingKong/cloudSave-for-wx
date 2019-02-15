@@ -1,21 +1,18 @@
-// pages/downloaddata/downloaddata.js
+// pages/watchvideo/watchvideo.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    itemPreview:null
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
-    this.setData({
-      itemPreview: options.url
-    })
+
   },
 
   /**
