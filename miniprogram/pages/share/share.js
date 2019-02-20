@@ -1,6 +1,5 @@
 // pages/share/share.js
 const db = wx.cloud.database();
-const getHomeData = require('../../utils/service').getHomeData
 const app = getApp();
 Page({
 
@@ -8,11 +7,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    shareList:null,
+    shareList: null,
     userInfo: null,
     isLogin: false,
     mp4logo: '../../images/upload/MP4logo.png',
-    shareLogo:'../../images/setting/cloudshare.png'
+    shareLogo: '../../images/setting/cloudshare.png',
   },
 
   /**
@@ -68,43 +67,57 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function (event) {
-    console.log(event)
     let targetId = event.target.id
-    if (this.data.shareList[targetId].isImg) {
-      return {
-        title:'分享文件',
-        path: 'pages/downloaddata/downloaddata?url=' + this.data.shareList[targetId].pic,
-        imageUrl:this.data.shareLogo
-      }
-      
-    }else if (this.data.shareList[targetId].isVideo) {
-      return {
-        title:'分享文件',
-        path: 'pages/downloaddata/downloaddata?url=' + this.data.shareList[targetId].videoPic,
-        imageUrl:this.data.shareLogo
-      }
-      
+    let item = this.data.shareList[targetId]
+    let obj = {
+      title: '分享文件',
+      path: null,
+      imageUrl: this.data.shareLogo
     }
-    
+    if (item.isImg) {
+      return {
+        title: '分享文件',
+        path: 'pages/downloaddata/downloaddata?type=img&id='+item.pic,
+        imageUrl: this.data.shareLogo
+      }
+
+    } else if (item.isVideo) {
+      let realUrl = item.realUrl;
+      this.changeVideoLink(item.videoPic).then(
+        res => {
+          realUrl = res.fileList[0].tempFileURL;
+          console.log('-----');
+          obj.path = 'pages/downloaddata/downloaddata?type=video&url=' + realUrl2
+          console.log(obj);
+        }
+      )
+      console.log(realUrl);
+
+      return obj
+      // return {
+      //   title: '分享文件',
+      //   path: 'pages/downloaddata/downloaddata?type=video&id='+item.videoPic,
+      //   imageUrl: this.data.shareLogo
+      // }
+    }
+
   },
   getPageData() {
-    let _this =this
+    let _this = this
     wx.cloud.callFunction({
       name: "getShareFile",
       success(res) {
-        console.log(res);
         _this.setData({
-          shareList:res.result.list
+          shareList: res.result.list
         })
-        console.log(_this.data.shareList);
-        
       }
     })
+    
   },
   /**
    * 长按弹出菜单
    */
-  longPress(e) { 
+  longPress(e) {
     let item = e.currentTarget.dataset.item;
     console.log(item);
     let _this = this
@@ -113,7 +126,7 @@ Page({
       itemColor: '#000000', //按钮的文字颜色,
       success: res => {
         if (res.tapIndex === 0) {
-          db.collection(item.from).doc(item.id).update({
+          db.collection(item.from).doc(item._id).update({
             data: {
               isShare: false
             },
@@ -140,9 +153,32 @@ Page({
               });
             }
           });
-        } 
+        }
       }
     });
+  },
+  // getSharedata(e) {
+  //   console.log(e);
+
+  // },
+  /**
+   * 
+   * 获取videoLink
+   */
+  changeVideoLink(cloudLink) {
+    return new Promise((resolve, reject) => {
+      wx.cloud.getTempFileURL({
+        fileList: [{
+          fileID: cloudLink
+        }],
+        success: res => {
+          resolve(res);
+        },
+        fail: error => {
+          reject(error)
+        }
+      })
+    })
   }
- 
+
 })

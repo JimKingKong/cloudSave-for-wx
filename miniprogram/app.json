@@ -1,9 +1,8 @@
 {
   "pages": [
-    "pages/watchvideo/watchvideo",
     "pages/share/share",
     "pages/downloaddata/downloaddata",
-    
+    "pages/watchvideo/watchvideo",
     "pages/upload/upload",
     "pages/about/about",
     "pages/setting/setting",

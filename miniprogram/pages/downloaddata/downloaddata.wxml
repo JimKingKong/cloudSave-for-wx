@@ -1,6 +1,10 @@
-<view class="download-page">
+<view class="download-page" wx:if="{{isShow}}">
   <view class="item-detail">
-    <image mode="widthFix" src="{{itemPreview}}" />
-  <button size="mini" type="primary" class="download-btn">点击下载</button>
+    <image wx:if="{{isImg}}" mode="widthFix" src="{{id}}" />
+    <video wx:elif="{{isVideo}}" src='{{id}}' class="video"></video>
+      <button size="mini" type="primary" class="download-btn" bindtap="onDownLoad" data-item="{{id}}" data-type="{{type}}">点击下载</button>
+      <button size="mini" type="primary" class="download-btn" bindtap="clickReturn">
+        点击进入分享页面
+      </button>
   </view>
 </view>

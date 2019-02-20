@@ -1,2 +1,3 @@
-<!--pages/watchvideo/watchvideo.wxml-->
-<text>pages/watchvideo/watchvideo.wxml</text>
+<view class='video-page'>
+<video src='{{link}}' class="video"></video>
+</view>

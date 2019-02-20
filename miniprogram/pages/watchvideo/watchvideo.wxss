@@ -1,1 +1,7 @@
-/* pages/watchvideo/watchvideo.wxss */
+.video-page{
+  height: 100%;
+  background-color: #fff;
+}
+.video{
+  width: 100%;
+}

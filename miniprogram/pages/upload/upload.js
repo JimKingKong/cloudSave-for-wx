@@ -148,13 +148,21 @@ Page({
         urls: [this.data.uploaddata[currentIndex].pic] //需要预览的图片链接列表,
       });
     } else if (e.currentTarget.dataset.type.isVideo) {
-      console.log('点击了视频');
       let videoLink = e.currentTarget.dataset.type.videoPic;
       _this.changeVideoLink(videoLink).then(res => {
         console.log(res);
-        let realUrl = res.fileList.tempFileURL
-        wx.navigateTo({ url: 'url' });
+        let realUrl = res.fileList[0].tempFileURL
+        wx.navigateTo({
+          url: '../watchvideo/watchvideo?link='+realUrl
+        });
       }).catch(error => {
+        wx.showToast({
+          title: '请求失败,请检查网络', //提示的内容,
+          icon: 'loading', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
         console.log(error);
       })
     }
@@ -184,8 +192,13 @@ Page({
                 wx.saveImageToPhotosAlbum({
                   filePath: res.tempFilePath,
                   success(saveres) {
-                    console.log('保存成功', saveres);
-
+                    wx.showToast({
+                      title: '保存成功', //提示的内容,
+                      icon: 'success', //图标,
+                      duration: 2000, //延迟时间,
+                      mask: true, //显示透明蒙层，防止触摸穿透,
+                      success: res => {}
+                    });
                   },
                 })
               }
@@ -198,7 +211,13 @@ Page({
                 wx.saveVideoToPhotosAlbum({
                   filePath: res.tempFilePath,
                   success(saveres) {
-                    console.log('保存视频成功', saveres);
+                    wx.showToast({
+                      title: '保存成功', //提示的内容,
+                      icon: 'success', //图标,
+                      duration: 2000, //延迟时间,
+                      mask: true, //显示透明蒙层，防止触摸穿透,
+                      success: res => {}
+                    });
                   }
                 })
               }
@@ -287,7 +306,7 @@ Page({
                   fail() {
                     wx.showToast({
                       title: '图片存储失败', //提示的内容,
-                      icon: 'fail', //图标,
+                      icon: 'loading', //图标,
                       duration: 2000, //延迟时间,
                       mask: true, //显示透明蒙层，防止触摸穿透,
 
@@ -301,7 +320,7 @@ Page({
             console.log('[上传图片] 失败：', error);
             wx.showToast({
               title: '上传失败,请检查网络',
-              icon: 'fail', //图标,
+              icon: 'loading', //图标,
               duration: 2000, //延迟时间,
               mask: true, //显示透明蒙层，防止触摸穿透,
             })
@@ -356,7 +375,7 @@ Page({
                   fail() {
                     wx.showToast({
                       title: '视频存储失败', //提示的内容,
-                      icon: 'fail', //图标,
+                      icon: 'loading', //图标,
                       duration: 2000, //延迟时间,
                       mask: true, //显示透明蒙层，防止触摸穿透,
 

@@ -15,7 +15,7 @@
             <view class="weui-media-box__title">{{item.des}}</view>
             <view class="weui-media-box__desc">{{tools.formatTime(item.time)}}</view>
           </view>
-          <button class="btn-share" open-type="share" id="{{index}}">
+          <button class="btn-share" open-type="share" id="{{index}}" data-item="{{item}}">
             <image class="btn-share-img" src="../../images/share/sharefile.png" />
           </button>
         </view>
