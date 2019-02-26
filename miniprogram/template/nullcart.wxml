@@ -1,9 +1,0 @@
-<template name="nullcart">
-  <view class="nulcart">
-    <view class="cart-logo">
-      <image src="{{imgurl}}" />
-    </view>
-    <view class="cart-desp">购物车还是空的</view>
-    <view class="cart-btn" bindtap="{{btnClick}}">到小米商城逛逛</view>
-  </view>
-</template>
