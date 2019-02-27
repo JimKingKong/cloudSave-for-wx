@@ -1,5 +1,5 @@
 <wxs src="../../wxs/tools.wxs" module="tools"></wxs>
-<view class="upload-page">
+<view class="upload-page" wx:if="{{!isDir}}">
   <view class="upload-top">
     <view class="center">
       <text class="title">文件>{{tools.formatTitle(title)}}</text>
@@ -14,13 +14,14 @@
         <view class="upload-main-block-item" bindlongpress="longPress" id="{{index}}" data-type="{{item}}">
           <image wx:if="{{item.pic}}" class="item-img" src="{{item.pic}}" bindtap="itemClick" id="{{index}}" data-type="{{item}}" />
           <image wx:elif="{{item.videoPic}}" class="item-img" src="{{mp4logo}}" bindtap="itemClick" id="{{index}}" data-type="{{item}}" />
-          <image wx:else class="item-img" src="{{otherlogo}}" bindtap="itemClick" id="{{index}}" data-type="{{item}}" />
+          <image wx:else class="item-img" src="{{otherlogo}}" bindtap="mineClick" id="{{index}}" data-type="{{item}}" />
           <text class="item-text">{{item.des}}</text>
         </view>
       </block>
     </view>
   </scroll-view>
-  
+
+  <!-- 重命名 -->
   <view class='toast-box' wx:if="{{showrename}}">
         <view class='toastbg'></view>
         <view class='showToast'>
@@ -42,6 +43,31 @@
             </view>
         </view>
     </view>
+
+<!-- 重命名文件夹 -->
+    <view class='toast-box' wx:if="{{showreDir}}">
+        <view class='toastbg'></view>
+        <view class='showToast'>
+            <view class='toast-title'>
+                <text>命名文件夹</text>
+            </view>
+            <view class='toast-main'>
+                <view class='toast-input'>
+                    <input  bindblur='setRenameValue' focus/>
+                </view>
+            </view>
+            <view class='toast-button'>
+                <view class='button1'>
+                    <button catchtap='dirCancel'>取消</button>
+                </view>
+                <view class='button2'>
+                    <button catchtap='dirConfirm'>确定</button>
+                </view>
+            </view>
+        </view>
+    </view>
+
+<!-- 删除文件 -->
       <view class='toast-box' wx:if="{{showDelete}}">
         <view class='toastbg'></view>
         <view class='showToast'>
@@ -50,7 +76,106 @@
             </view>
             <view class='toast-main'>
                 <view class='delete-input'>
-                   <text>确认删除文件</text>
+                   <text>确认删除</text>
+                   <text>{{item.des}}</text>
+                </view>
+            </view>
+            <view class='delete-button'>
+                <view class='button1'>
+                    <button catchtap='deleteCancel'>取消</button>
+                </view>
+                <view class='button2'>
+                    <button catchtap='deleteConfirm'>确定</button>
+                </view>
+            </view>
+        </view>
+    </view>
+
+</view>
+
+
+
+<!-- 文件夹里面的页面 -->
+<view class="upload-page" wx:else>
+  <view class="upload-top">
+       <view class="left" bindtap="BackToDir">
+      <image class="add" src="../../images/upload/back.png" />
+    </view>
+    <view class="center">
+      <text class="title">文件>{{tools.formatTitle(title)}}>{{currentDir.des}}</text>
+    </view>
+    <view class="right" bindtap="onUpload">
+      <image class="add" src="../../images/upload/add.png" />
+    </view>
+  </view>
+  <scroll-view class="upload-main" scroll-y>
+    <view class="upload-main-block">
+      <block wx:for="{{currentDir.dirData}}" wx:key="{{index}}">
+        <view class="upload-main-block-item" bindlongpress="dirPress" id="{{index}}" data-type="{{item}}">
+          <image wx:if="{{item.pic}}" class="item-img" src="{{item.pic}}" bindtap="itemClick" id="{{index}}" data-type="{{item}}" />
+          <image wx:elif="{{item.videoPic}}" class="item-img" src="{{mp4logo}}" bindtap="itemClick" id="{{index}}" data-type="{{item}}" />
+          <text class="item-text">{{item.des}}</text>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <!-- 重命名 -->
+  <view class='toast-box' wx:if="{{showrename}}">
+        <view class='toastbg'></view>
+        <view class='showToast'>
+            <view class='toast-title'>
+                <text>重命名</text>
+            </view>
+            <view class='toast-main'>
+                <view class='toast-input'>
+                    <input  bindblur='setRenameValue'/>
+                </view>
+            </view>
+            <view class='toast-button'>
+                <view class='button1'>
+                    <button catchtap='reNameCancel'>取消</button>
+                </view>
+                <view class='button2'>
+                    <button catchtap='reNameConfirm'>确定</button>
+                </view>
+            </view>
+        </view>
+    </view>
+
+<!-- 重命名文件夹 -->
+    <view class='toast-box' wx:if="{{showreDir}}">
+        <view class='toastbg'></view>
+        <view class='showToast'>
+            <view class='toast-title'>
+                <text>命名文件夹</text>
+            </view>
+            <view class='toast-main'>
+                <view class='toast-input'>
+                    <input  bindblur='setRenameValue' focus/>
+                </view>
+            </view>
+            <view class='toast-button'>
+                <view class='button1'>
+                    <button catchtap='dirCancel'>取消</button>
+                </view>
+                <view class='button2'>
+                    <button catchtap='dirConfirm'>确定</button>
+                </view>
+            </view>
+        </view>
+    </view>
+
+<!-- 删除文件 -->
+      <view class='toast-box' wx:if="{{showDelete}}">
+        <view class='toastbg'></view>
+        <view class='showToast'>
+            <view class='toast-title'>
+                <text>提示</text>
+            </view>
+            <view class='toast-main'>
+                <view class='delete-input'>
+                   <text>确认删除</text>
                    <text>{{item.des}}</text>
                 </view>
             </view>
