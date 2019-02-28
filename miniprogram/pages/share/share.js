@@ -10,6 +10,7 @@ Page({
     shareList: null,
     userInfo: null,
     isLogin: false,
+    currentDir:null,
     mp4logo: '../../images/upload/MP4logo.png',
     shareLogo: '../../images/setting/cloudshare.png',
   },
@@ -77,7 +78,7 @@ Page({
     if (item.isImg) {
       return {
         title: '分享文件',
-        path: 'pages/downloaddata/downloaddata?type=img&id='+item.pic,
+        path: 'pages/downloaddata/downloaddata?type=img&id=' + item.pic,
         imageUrl: this.data.shareLogo
       }
 
@@ -87,7 +88,7 @@ Page({
         res => {
           realUrl = res.fileList[0].tempFileURL;
           console.log('-----');
-          obj.path = 'pages/downloaddata/downloaddata?type=video&url=' + realUrl2
+          obj.path = 'pages/downloaddata/downloaddata?type=video&url=' + realUrl
           console.log(obj);
         }
       )
@@ -112,7 +113,7 @@ Page({
         })
       }
     })
-    
+
   },
   /**
    * 长按弹出菜单
@@ -126,33 +127,70 @@ Page({
       itemColor: '#000000', //按钮的文字颜色,
       success: res => {
         if (res.tapIndex === 0) {
-          db.collection(item.from).doc(item._id).update({
-            data: {
-              isShare: false
-            },
-            success(res) {
-              console.log(res);
-              wx.showToast({
-                title: '设置成功', //提示的内容,
-                icon: 'success', //图标,
-                duration: 2000, //延迟时间,
-                mask: true, //显示透明蒙层，防止触摸穿透,
-                success: res => {
-                  _this.getPageData();
+          if (item.from === "mine") {
+            wx.cloud.callFunction({
+              name: 'getCurrentFile',
+              data: {
+                typeDB:'mine',
+                id:item.fromId
+              },
+              success: res => {
+                this.setData({
+                  currentDir: res.result.list.dirData
+                })
+                let num;
+                for (let i = 0; i < this.data.currentDir.length; i++) {
+                  const element = this.data.currentDir[i];
+                  if (element.des===item.des) num = i
                 }
-              });
-            },
-            fail(e) {
-              console.log(e);
-              wx.showToast({
-                title: '设置失败,请检查网络', //提示的内容,
-                icon: 'fail', //图标,
-                duration: 2000, //延迟时间,
-                mask: true, //显示透明蒙层，防止触摸穿透,
-                success: res => {}
-              });
-            }
-          });
+                item.isShare = false;
+                console.log(num);
+                let newFile = this.data.currentDir
+                newFile.splice(num, 1, item)
+                db.collection(item.from).doc(item._id).update({
+                  data: {
+                    dirData:newFile
+                  },
+                  success() {
+                    _this.getPageData();
+                  }
+                })
+              
+              },
+              fail: e => {
+                console.log(e)
+              }
+            })
+           
+          } else {
+            db.collection(item.from).doc(item._id).update({
+              data: {
+                isShare: false
+              },
+              success(res) {
+                console.log(res);
+                wx.showToast({
+                  title: '设置成功', //提示的内容,
+                  icon: 'success', //图标,
+                  duration: 2000, //延迟时间,
+                  mask: true, //显示透明蒙层，防止触摸穿透,
+                  success: res => {
+                    _this.getPageData();
+                  }
+                });
+              },
+              fail(e) {
+                console.log(e);
+                wx.showToast({
+                  title: '设置失败,请检查网络', //提示的内容,
+                  icon: 'fail', //图标,
+                  duration: 2000, //延迟时间,
+                  mask: true, //显示透明蒙层，防止触摸穿透,
+                  success: res => {}
+                });
+              }
+            });
+          }
         }
       }
     });

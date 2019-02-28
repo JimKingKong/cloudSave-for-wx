@@ -339,6 +339,7 @@ Page({
               let currentDirData = {
                 pic: fileID,
                 from: type,
+                fromId:_this.data.currentDir._id,
                 des: name,
                 isImg: true,
                 isShare: false,
@@ -523,8 +524,6 @@ Page({
   getCurrentFile() {
     let typeDB = this.data.type;
     let currentDirNum = this.data.currentDirNum
-
-
     wx.cloud.callFunction({
       name: 'getFileList',
       data: {
