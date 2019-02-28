@@ -754,7 +754,7 @@ Page({
     })
   },
   commonConfirm(tips, inputValue) {
-    if (inputValue === null || inputValue.trim().length == 0) {
+    if (inputValue === null || inputValue.trim().length === 0) {
       wx.showToast({
         title: tips, //提示的内容,
         icon: 'loading', //图标,
@@ -763,6 +763,8 @@ Page({
         success: res => {}
       });
       return true
+    } else {
+      return false
     }
   },
   dirPress(e) {
