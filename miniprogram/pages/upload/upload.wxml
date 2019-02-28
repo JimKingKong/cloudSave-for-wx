@@ -176,7 +176,7 @@
             <view class='toast-main'>
                 <view class='delete-input'>
                    <text>确认删除</text>
-                   <text>{{item.des}}</text>
+                   <text>{{currentItem.des}}</text>
                 </view>
             </view>
             <view class='delete-button'>

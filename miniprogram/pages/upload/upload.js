@@ -13,9 +13,13 @@ Page({
     showreDir: false,
     inputValue: null,
     showDelete: false,
+    //文件夹操作
     isDir: false,
-    currentDirNum:null,
+    currentDirNum: null,
     currentDir: null,
+    currentItem: null,
+    dirItemNum: null,
+
     id: null,
     item: null,
     mp4logo: '../../images/upload/MP4logo.png',
@@ -41,10 +45,11 @@ Page({
       title: options.title,
       type: typeDB
     })
-    if (this.data.type==="mine") {
+    if (this.data.type === "mine" && this.isDir) {
       this.getCurrentFile()
+    } else {
+      this.getCurrentPage()
     }
-    this.getCurrentPage()
 
     wx.getSetting({
       success(res) {
@@ -515,26 +520,26 @@ Page({
   /**
    * 拿到当前文件夹的文件
    */
-  getCurrentFile() { 
+  getCurrentFile() {
     let typeDB = this.data.type;
     let currentDirNum = this.data.currentDirNum
-    console.log(this.data.currentDir);
-    
-      wx.cloud.callFunction({
-        name: 'getFileList',
-        data: {
-          typeDB
-        },
-        success: res => {
-          this.setData({
-            currentDir: res.result.list[currentDirNum]
-          })
-          console.log(this.data.currentDir);
-        },
-        fail: e => {
-          console.log(e)
-        }
-      })
+
+
+    wx.cloud.callFunction({
+      name: 'getFileList',
+      data: {
+        typeDB
+      },
+      success: res => {
+        this.setData({
+          currentDir: res.result.list[currentDirNum]
+        })
+        console.log(this.data.currentDir);
+      },
+      fail: e => {
+        console.log(e)
+      }
+    })
   },
   /**
    * 获取数据
@@ -551,7 +556,7 @@ Page({
           uploaddata: res.result.list
         })
         console.log(this.data.uploaddata);
-        
+
       },
       fail: e => {
         console.log(e)
@@ -567,22 +572,47 @@ Page({
     })
   },
   reNameConfirm() {
+    let _this = this
     let inputValue = this.data.inputValue;
     if (this.commonConfirm('文件名不能为空', inputValue)) return
     let typeDB = this.data.type;
     let id = this.data.id
-    db.collection(typeDB).doc(id).update({
-      data: {
-        des: inputValue
-      },
-      success(res) {
-        console.log(res);
-      }
-    });
-    this.getCurrentPage();
+    //文件夹内重命名
+    if (typeDB === "mine") {
+      let totalData = this.data.currentDir.dirData;
+      totalData[this.data.dirItemNum].des = inputValue
+      db.collection(typeDB).doc(id).update({
+        data: {
+          dirData: totalData
+        },
+        success(res) {
+          console.log(res);
+          wx.showToast({
+            title: '设置成功', //提示的内容,
+            icon: 'success', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+          });
+        }
+      });
+      _this.getCurrentFile();
+    } else {
+      //外部重命名
+      db.collection(typeDB).doc(id).update({
+        data: {
+          des: inputValue
+        },
+        success(res) {
+          console.log(res);
+        }
+      });
+      this.getCurrentPage();
+    }
     this.setData({
-      showrename: false
+      showrename: false,
+      inputValue: null
     })
+
   },
   setRenameValue(e) {
     this.setData({
@@ -601,15 +631,47 @@ Page({
     let _this = this
     let typeDB = this.data.type;
     let id = this.data.id
-    db.collection(typeDB).doc(id).remove({
-      success(res) {
-        console.log(res);
-        _this.getCurrentPage();
-      },
-      fail(e) {
-        console.log(e);
-      }
-    })
+    if (typeDB === "mine" && this.data.isDir) {
+      let totalData = this.data.currentDir.dirData;
+      totalData.splice(this.data.dirItemNum, 1)
+      db.collection(typeDB).doc(id).update({
+        data: {
+          dirData: totalData
+        },
+        success(res) {
+          console.log(res);
+          wx.showToast({
+            title: '删除成功', //提示的内容,
+            icon: 'success', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success() {
+              _this.getCurrentFile()
+            }
+          });
+        }
+      });
+ 
+    } else {
+      db.collection(typeDB).doc(id).remove({
+        success(res) {
+          console.log(res);
+          wx.showToast({
+            title: '删除成功', //提示的内容,
+            icon: 'success', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {
+              _this.getCurrentPage();
+            }
+          });
+
+        },
+        fail(e) {
+          console.log(e);
+        }
+      })
+    }
 
     this.setData({
       showDelete: false
@@ -667,13 +729,10 @@ Page({
   },
   // 我的文件夹点击
   mineClick(e) {
-    console.log(e.currentTarget.dataset.type);
-    console.log(e);
     //显示路径
     this.setData({
       isDir: true,
-      currentDir: e.currentTarget.dataset.type,
-      currentDirNum:e.currentTarget.id
+      currentDirNum: e.currentTarget.id
     })
     this.getCurrentFile()
   },
@@ -697,14 +756,18 @@ Page({
   },
   dirPress(e) {
     let _this = this
+
     console.log(e);
+
     let typeDB = _this.data.type;
-    let id  = this.data.currentDir._id
+    let totalData = this.data.currentDir.dirData;
+    let id = this.data.currentDir._id
+
     let itemNum = e.currentTarget.id
     let item = e.currentTarget.dataset.type
-    let totalData = this.data.currentDir.dirData;
-    console.log(id,itemNum,item,totalData);
-    
+
+    console.log(id, itemNum, item, totalData);
+
     wx.showActionSheet({
       itemList: ['保存到本地', '设为分享', '重命名', '删除'], //按钮的文字数组，数组长度最大为6个,
       itemColor: '#000000', //按钮的文字颜色,
@@ -750,16 +813,13 @@ Page({
                 })
               }
             })
-          } else {
-
           }
-
         } else if (res.tapIndex === 1) {
           //设为分享
-          totalData[itemNum].isShare=true
+          totalData[itemNum].isShare = true
           db.collection(typeDB).doc(id).update({
             data: {
-              dirData:totalData
+              dirData: totalData
             },
             success(res) {
               console.log(res);
@@ -779,14 +839,16 @@ Page({
           //重命名
           _this.setData({
             showrename: true,
-            id
+            id,
+            dirItemNum: itemNum
           })
         } else if (res.tapIndex === 3) {
           //删除
           this.setData({
             showDelete: true,
             id,
-            item
+            currentItem: item,
+            dirItemNum: itemNum
           })
         }
       }
