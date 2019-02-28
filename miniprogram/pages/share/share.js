@@ -111,6 +111,7 @@ Page({
         _this.setData({
           shareList: res.result.list
         })
+        console.log(res.result.list);
       }
     })
 
@@ -146,8 +147,9 @@ Page({
                 item.isShare = false;
                 console.log(num);
                 let newFile = this.data.currentDir
-                newFile.splice(num, 1, item)
-                db.collection(item.from).doc(item._id).update({
+                newFile.splice(num, 1,item)
+
+                db.collection(item.from).doc(item.fromId).update({
                   data: {
                     dirData:newFile
                   },

@@ -176,10 +176,18 @@ Page({
     let _this = this
     console.log(e.currentTarget.dataset.type);
     let currentIndex = e.currentTarget.id
+    let item = this.data.uploaddata[currentIndex]
+    let dirItem = this.data.currentDir.dirData[currentIndex]
     if (e.currentTarget.dataset.type.isImg) {
-      wx.previewImage({
-        urls: [this.data.uploaddata[currentIndex].pic] //需要预览的图片链接列表,
-      });
+      if (this.data.type === 'mine') {
+        wx.previewImage({
+          urls: [dirItem.pic] //需要预览的图片链接列表,
+        });
+      } else {
+        wx.previewImage({
+          urls: [item.pic] //需要预览的图片链接列表,
+        });
+      }
     } else if (e.currentTarget.dataset.type.isVideo) {
       let videoLink = e.currentTarget.dataset.type.videoPic;
       _this.changeVideoLink(videoLink).then(res => {
@@ -198,8 +206,8 @@ Page({
         });
         console.log(error);
       })
-    }
 
+    }
   },
   /**
    * 长按 
@@ -339,7 +347,7 @@ Page({
               let currentDirData = {
                 pic: fileID,
                 from: type,
-                fromId:_this.data.currentDir._id,
+                fromId: _this.data.currentDir._id,
                 des: name,
                 isImg: true,
                 isShare: false,
@@ -448,6 +456,7 @@ Page({
               let currentDirData = {
                 videoPic: fileID,
                 from: type,
+                fromId: _this.data.currentDir._id,
                 des: name,
                 isVideo: true,
                 isShare: false,
@@ -650,7 +659,7 @@ Page({
           });
         }
       });
- 
+
     } else {
       db.collection(typeDB).doc(id).remove({
         success(res) {
@@ -729,9 +738,12 @@ Page({
   // 我的文件夹点击
   mineClick(e) {
     //显示路径
+    console.log(e);
+
     this.setData({
       isDir: true,
-      currentDirNum: e.currentTarget.id
+      currentDirNum: e.currentTarget.id,
+
     })
     this.getCurrentFile()
   },
