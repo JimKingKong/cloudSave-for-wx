@@ -572,7 +572,7 @@ Page({
     })
   },
   /**
-   * reName
+   * 重命名
    */
   reNameCancel() {
     this.setData({
@@ -624,11 +624,25 @@ Page({
 
   },
   setRenameValue(e) {
-   
     this.setData({
       inputValue: e.detail.value
       })
- 
+  },
+  //重命名判断
+  commonConfirm(tips, inputValue) {
+    console.log(inputValue);
+    if (inputValue === null ||inputValue ===undefined || inputValue.trim().length === 0) {
+      wx.showToast({
+        title: tips, //提示的内容,
+        icon: 'loading', //图标,
+        duration: 2000, //延迟时间,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      return true
+    } else {
+      return false
+    }
   },
   /**
    * delete
@@ -756,23 +770,7 @@ Page({
       isDir: false
     })
   },
-  //重命名判断
-  commonConfirm(tips, inputValue) {
-    console.log(inputValue);
-    
-    if (inputValue === null ||inputValue ===undefined || inputValue.trim().length === 0) {
-      wx.showToast({
-        title: tips, //提示的内容,
-        icon: 'loading', //图标,
-        duration: 2000, //延迟时间,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
-      return true
-    } else {
-      return false
-    }
-  },
+ 
   dirPress(e) {
     let _this = this
 
