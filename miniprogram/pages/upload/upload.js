@@ -630,7 +630,6 @@ Page({
   },
   //重命名判断
   commonConfirm(tips, inputValue) {
-    console.log(inputValue);
     if (inputValue === null ||inputValue ===undefined || inputValue.trim().length === 0) {
       wx.showToast({
         title: tips, //提示的内容,
@@ -872,5 +871,49 @@ Page({
     });
 
   },
+  formForDirFileName(e) {
+    console.log(e.detail);
+    let _this = this
+    let inputValue = e.detail.value.dirFileName;
+    if (this.commonConfirm('文件名不能为空', inputValue)) return
+    let typeDB = this.data.type;
+    let id = this.data.id
+    //文件夹内重命名
+    if (typeDB === "mine") {
+      let totalData = this.data.currentDir.dirData;
+      totalData[this.data.dirItemNum].des = inputValue
+      db.collection(typeDB).doc(id).update({
+        data: {
+          dirData: totalData
+        },
+        success(res) {
+          console.log(res);
+          wx.showToast({
+            title: '设置成功', //提示的内容,
+            icon: 'success', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+          });
+        }
+      });
+      _this.getCurrentFile();
+    } else {
+      //外部重命名
+      db.collection(typeDB).doc(id).update({
+        data: {
+          des: inputValue
+        },
+        success(res) {
+          console.log(res);
+        }
+      });
+      this.getCurrentPage();
+    }
+    this.setData({
+      showrename: false,
+      inputValue: null
+    })
+   
 
+  }
 })
