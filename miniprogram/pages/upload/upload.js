@@ -620,12 +620,15 @@ Page({
       showrename: false,
       inputValue: null
     })
+   
 
   },
   setRenameValue(e) {
+   
     this.setData({
       inputValue: e.detail.value
-    })
+      })
+ 
   },
   /**
    * delete
@@ -753,8 +756,11 @@ Page({
       isDir: false
     })
   },
+  //重命名判断
   commonConfirm(tips, inputValue) {
-    if (inputValue === null || inputValue.trim().length === 0) {
+    console.log(inputValue);
+    
+    if (inputValue === null ||inputValue ===undefined || inputValue.trim().length === 0) {
       wx.showToast({
         title: tips, //提示的内容,
         icon: 'loading', //图标,
