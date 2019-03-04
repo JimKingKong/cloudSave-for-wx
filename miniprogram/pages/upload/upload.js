@@ -177,9 +177,9 @@ Page({
     console.log(e.currentTarget.dataset.type);
     let currentIndex = e.currentTarget.id
     let item = this.data.uploaddata[currentIndex]
-    let dirItem = this.data.currentDir.dirData[currentIndex]
     if (e.currentTarget.dataset.type.isImg) {
-      if (this.data.type === 'mine') {
+      if (this.data.type === 'mine' && this.data.isDir) {
+        let dirItem = this.data.currentDir.dirData[currentIndex]
         wx.previewImage({
           urls: [dirItem.pic] //需要预览的图片链接列表,
         });
