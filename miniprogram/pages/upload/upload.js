@@ -31,7 +31,7 @@ Page({
    */
   onLoad: function (options) {
     let _this = this;
-    let typeDB = 'users'
+    let typeDB;
     if (options.title === "'图片'") {
       typeDB = 'picture'
     } else if (options.title === "'我的'") {

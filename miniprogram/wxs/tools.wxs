@@ -11,7 +11,8 @@ var formatTitle = function(title) {
   var newTitle = title.substring(1, (title.length - 1));
   return newTitle
 }
+
 module.exports = {
   formatTime: formatTime,
-  formatTitle: formatTitle
+  formatTitle: formatTitle,
 }
