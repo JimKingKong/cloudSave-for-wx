@@ -219,14 +219,19 @@ Page({
     let id = e.currentTarget.dataset.type._id
     let item = e.currentTarget.dataset.type
     if (typeDB == 'mine') {
-      console.log(1);
       wx.showActionSheet({
-        itemList: ['删除文件夹'], //按钮的文字数组，数组长度最大为6个,
+        itemList: ['重命名文件夹','删除文件夹'], //按钮的文字数组，数组长度最大为6个,
         itemColor: '#000000', //按钮的文字颜色,
         success: res => {
-          if (res.tapIndex === 0) {
+          if (res.tapIndex === 1) {
             this.setData({
               showDelete: true,
+              id,
+              item
+            })
+          }else if (res.tapIndex === 0) {
+            this.setData({
+              showrename: true,
               id,
               item
             })
@@ -579,57 +584,11 @@ Page({
       showrename: false
     })
   },
-  reNameConfirm() {
-    let _this = this
-    let inputValue = this.data.inputValue;
-    if (this.commonConfirm('文件名不能为空', inputValue)) return
-    let typeDB = this.data.type;
-    let id = this.data.id
-    //文件夹内重命名
-    if (typeDB === "mine") {
-      let totalData = this.data.currentDir.dirData;
-      totalData[this.data.dirItemNum].des = inputValue
-      db.collection(typeDB).doc(id).update({
-        data: {
-          dirData: totalData
-        },
-        success(res) {
-          console.log(res);
-          wx.showToast({
-            title: '设置成功', //提示的内容,
-            icon: 'success', //图标,
-            duration: 2000, //延迟时间,
-            mask: true, //显示透明蒙层，防止触摸穿透,
-          });
-        }
-      });
-      _this.getCurrentFile();
-    } else {
-      //外部重命名
-      db.collection(typeDB).doc(id).update({
-        data: {
-          des: inputValue
-        },
-        success(res) {
-          console.log(res);
-        }
-      });
-      this.getCurrentPage();
-    }
-    this.setData({
-      showrename: false,
-      inputValue: null
-    })
-   
-
-  },
-  setRenameValue(e) {
-    this.setData({
-      inputValue: e.detail.value
-      })
-  },
+  
   //重命名判断
   commonConfirm(tips, inputValue) {
+    console.log(inputValue);
+    
     if (inputValue === null ||inputValue ===undefined || inputValue.trim().length === 0) {
       wx.showToast({
         title: tips, //提示的内容,
@@ -772,13 +731,10 @@ Page({
  
   dirPress(e) {
     let _this = this
-
     console.log(e);
-
     let typeDB = _this.data.type;
     let totalData = this.data.currentDir.dirData;
     let id = this.data.currentDir._id
-
     let itemNum = e.currentTarget.id
     let item = e.currentTarget.dataset.type
 
@@ -879,7 +835,7 @@ Page({
     let typeDB = this.data.type;
     let id = this.data.id
     //文件夹内重命名
-    if (typeDB === "mine") {
+    if (typeDB === "mine"&&this.data.isDir) {
       let totalData = this.data.currentDir.dirData;
       totalData[this.data.dirItemNum].des = inputValue
       db.collection(typeDB).doc(id).update({
@@ -904,7 +860,13 @@ Page({
           des: inputValue
         },
         success(res) {
-          console.log(res);
+          wx.showToast({
+            title: '设置成功', //提示的内容,
+            icon: 'success', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+          });
         }
       });
       this.getCurrentPage();

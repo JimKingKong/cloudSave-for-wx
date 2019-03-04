@@ -37,12 +37,12 @@
                     <button catchtap='reNameCancel'>取消</button>
                 </view>
                 <view class='button2'>
-                    <button form-type="submit" catchtap='reNameConfirm'>确定</button>
+                    <button form-type="submit">确定</button>
                 </view>
             </view>
         </view>
     </form>
-    <!-- 重命名文件夹 -->
+    <!-- 创建文件夹 -->
     <form class='toast-box' wx:if="{{showreDir}}">
         <view class='toastbg'></view>
         <view class='showToast'>
@@ -129,33 +129,11 @@
                     <button catchtap='reNameCancel'>取消</button>
                 </view>
                 <view class='button2'>
-                    <button form-type="submit" catchtap='reNameConfirm'>确定</button>
+                    <button form-type="submit">确定</button>
                 </view>
             </view>
         </view>
     </form>
-    <!-- 重命名文件夹 -->
-    <view class='toast-box' wx:if="{{showreDir}}">
-        <view class='toastbg'></view>
-        <view class='showToast'>
-            <view class='toast-title'>
-                <text>命名文件夹</text>
-            </view>
-            <view class='toast-main'>
-                <view class='toast-input'>
-                    <input bindblur='setRenameValue' focus />
-                </view>
-            </view>
-            <view class='toast-button'>
-                <view class='button1'>
-                    <button catchtap='dirCancel'>取消</button>
-                </view>
-                <view class='button2'>
-                    <button catchtap='dirConfirm'>确定</button>
-                </view>
-            </view>
-        </view>
-    </view>
     <!-- 删除文件 -->
     <view class='toast-box' wx:if="{{showDelete}}">
         <view class='toastbg'></view>
