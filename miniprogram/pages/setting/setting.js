@@ -15,7 +15,6 @@ Page({
         title: '个人资料'
       },
       {
-        url: '',
         method:'onRight',
         img: '../../images/setting/toright.png',
         title: '授权管理'
@@ -48,7 +47,6 @@ Page({
    */
   onShow: function () {
     if (app.globalData.userInfo !== undefined) {
-      this.login();
       this.setData({
         userInfo: app.globalData.userInfo,
       })
@@ -97,29 +95,8 @@ Page({
       this.setData({
         userInfo: e.detail.userInfo
       })
-      this.login()
+ 
     }
-  },
-  /**
-   * login()
-   */
-  login() {
-    wx.login({
-      success: res => {
-        let code = res.code;
-        wx.request({
-          url: 'http://47.93.30.78:8080/XiaoMiShop/mine?code=' + code, //开发者服务器接口地址",
-          success: res => {
-            app.globalData.isLogin = true;
-            this.setData({
-              isLogin: true,
-
-            });
-          },
-          fail: (res) => console.log(res),
-        });
-      },
-    });
   },
   onRight() {
     wx.openSetting();
