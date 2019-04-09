@@ -43,7 +43,7 @@
         </view>
     </form>
     <!-- 创建文件夹 -->
-    <form class='toast-box' wx:if="{{showreDir}}">
+    <form class='toast-box' wx:if="{{showreDir}}" bindsubmit="dirConfirm">
         <view class='toastbg'></view>
         <view class='showToast'>
             <view class='toast-title'>
@@ -51,7 +51,7 @@
             </view>
             <view class='toast-main'>
                 <view class='toast-input'>
-                    <input bindblur='setRenameValue' focus/>
+                    <input name="dirName"  focus/>
                 </view>
             </view>
             <view class='toast-button'>
@@ -59,7 +59,7 @@
                     <button catchtap='dirCancel'>取消</button>
                 </view>
                 <view class='button2'>
-                    <button catchtap='dirConfirm'>确定</button>
+                    <button form-type='submit'>确定</button>
                 </view>
             </view>
         </view>

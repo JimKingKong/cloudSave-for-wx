@@ -686,9 +686,10 @@ Page({
       showreDir: false
     })
   },
-  dirConfirm() {
+  dirConfirm(e) {
     let typeDB = this.data.type;
-    let inputValue = this.data.inputValue;
+    let inputValue =  e.detail.value.dirName;
+    console.log(e.detail.value.dirName);
     if (this.commonConfirm('文件名不能为空', inputValue)) return
     db.collection(typeDB).add({
       data: {
@@ -878,9 +879,9 @@ Page({
    
 
   },
-  setRenameValue(e) { 
-    this.setData({ 
-      inputValue: e.detail.value 
-      }) 
-  }, 
+  // setRenameValue(e) { 
+  //   this.setData({ 
+  //     inputValue: e.detail.value 
+  //     }) 
+  // }, 
 })
