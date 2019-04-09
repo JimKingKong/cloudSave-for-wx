@@ -877,5 +877,10 @@ Page({
     })
    
 
-  }
+  },
+  setRenameValue(e) { 
+    this.setData({ 
+      inputValue: e.detail.value 
+      }) 
+  }, 
 })
